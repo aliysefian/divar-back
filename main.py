@@ -38,7 +38,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return {}
 
 @app.on_event("startup")
-@repeat_every(seconds=10)  # 1 hour
+@repeat_every(seconds=180) 
 def call_back():
     print("start")
     response=requests.get('http://127.0.0.1:8000/period-call/?skip=0&limit=100')
