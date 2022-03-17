@@ -20,7 +20,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_posts(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Posts).offset(skip).limit(limit).all()
+    return db.query(models.Posts).order_by(models.Posts.Local_modified.desc()).offset(skip).limit(limit).all()
 
 
 def create_user(db: Session, user: schemas.UserCreate):
