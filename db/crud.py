@@ -2,7 +2,8 @@ from asyncio.log import logger
 from select import select
 from sqlite3 import IntegrityError
 from pandas import array
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,defer,undefer
+from fastapi_pagination import Page, add_pagination, paginate
 
 from . import models, schemas
 
@@ -20,7 +21,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_posts(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Posts).order_by(models.Posts.Local_modified.desc()).offset(skip).limit(limit).all()
+    return db.query(models.Posts).options(defer("description")).order_by(models.Posts.Local_modified.desc()).offset(skip).limit(limit).all()
 
 
 def create_user(db: Session, user: schemas.UserCreate):
