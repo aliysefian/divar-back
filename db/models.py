@@ -40,13 +40,27 @@ class Posts(Base):
     list_data = Column(String, index=True,nullable=True)
     web_images = Column(String, index=True,nullable=True)
     description = Column(String, index=True,nullable=True)
-#   "description":data.get("description"), 
-#         "business_type":data.get("business_data")["business_type"],
-#         "price":data.get("webengage")["price"],
-#         "brand_model":data.get("webengage")["brand_model"],
-#         "city":data.get("webengage")["city"],
-#         "token":data.get("webengage")["token"],
-#         "title":widgets.get("header")["title"],
-#           "date":widgets.get("header")["date"],
-#         "list_data":widgets.get("list_data"),
-#         "web_images":widgets.get("web_images"), 
+
+
+    category = Column(String, index=True,nullable=True)
+    title = Column(String, index=True,nullable=True)
+    district = Column(String, index=True,nullable=True)
+    url = Column(String, index=True,nullable=True)
+
+
+
+
+
+#  "category": data.get("category")['title'],
+#         "title": data.get("share"),
+#         "url": data.get("url"),
+#         "district": data.get("district"),
+#         "description": data.get("description"),
+#         "business_type": data.get("business_data")["business_type"],
+#         "price": data.get("webengage")["price"],
+#         "brand_model": data.get("webengage")["brand_model"],
+#         "token": data.get("webengage")["token"],
+#         "title": widgets.get("header")["title"],
+#         "date": widgets.get("header")["date"],
+#         "list_data": widgets.get("list_data"),
+#         "web_images": widgets.get("web_images"),

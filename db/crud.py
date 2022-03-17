@@ -18,6 +18,7 @@ def get_user_by_email(db: Session, email: str):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
+
 def get_posts(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Posts).offset(skip).limit(limit).all()
 
@@ -38,17 +39,26 @@ def create_posts(db: Session, posts):
     db_user = []
     cnt = 0
     for post in posts:
-      
+
         image = post.get("web_images")
         if len(image) > 0:
             image = image[0][1]['src']
         else:
             image = None
-        db_user = (models.Posts(price=post.get("price"), web_images=image, description=post.get(
-            "description"), city=post.get("city"), brand_model=post.get("brand_model"), token=post.get("token")))
+        db_user = (
+            models.Posts(price=post.get("price"),
+                         web_images=image,
+                         description=post.get("description"),
+                         business_type=post.get("business_type"),
+                         city=post.get("city"), 
+                         brand_model=post.get("brand_model"),
+                         token=post.get("token"),
+                         title=post.get("title"), category=post.get("category"),
+                         district=post.get("district"), url=post.get("url")
+                         ))
         ex = db.query(models.Posts).filter(
             models.Posts.token == post.get("token")).first()
-      
+
         if not ex:
             cnt = cnt+1
             db.add(db_user)
