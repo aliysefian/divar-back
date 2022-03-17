@@ -8,11 +8,23 @@ from db import crud, models, schemas
 from db.database import SessionLocal, engine
 from db.api import get_data_from_divar
 from fastapi_utils.tasks import repeat_every
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = ["*"]
+
+
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
