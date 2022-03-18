@@ -43,8 +43,9 @@ def get_db():
 
 
 @app.get("/period-call/")
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    data=get_data_from_divar()
+def read_users(city="isfahan", db: Session = Depends(get_db)):
+    print(city)
+    data=get_data_from_divar(city=city)
     posts= crud.create_posts(db,data)
     print("finised",posts)
     return {}
@@ -57,7 +58,12 @@ def call_back():
     print("=fi",response.status_code)
 
 
-
+@app.on_event("startup")
+@repeat_every(seconds=200) 
+def call_back_city():
+    print("start")
+    response=requests.get('http://127.0.0.1:8000/period-call/?city=tehran')
+    print("=fi",response.status_code)
 # @app.get("/users/{user_id}", response_model=schemas.User)
 # def read_user(user_id: int, db: Session = Depends(get_db)):
 #     db_user = crud.get_user(db, user_id=user_id)
@@ -79,6 +85,6 @@ def call_back():
 #     return items
 
 @app.get("/posts/")
-def read_posts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_posts(db, skip=skip, limit=limit)
+def read_posts(skip: int = 0, limit: int = 100,city="isfahan", db: Session = Depends(get_db)):
+    items = crud.get_posts(db, skip=skip, limit=limit,city=city)
     return items

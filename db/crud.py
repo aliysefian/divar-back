@@ -20,8 +20,8 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def get_posts(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Posts).options(defer("description")).order_by(models.Posts.Local_modified.desc()).offset(skip).limit(limit).all()
+def get_posts(db: Session, skip: int = 0, limit: int = 100,city='isfahan'):
+    return db.query(models.Posts).filter(models.Posts.city == city).options(defer("description")).order_by(models.Posts.Local_modified.desc()).offset(skip).limit(limit).all()
 
 
 def create_user(db: Session, user: schemas.UserCreate):

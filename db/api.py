@@ -40,6 +40,7 @@ def get_details_from_data(token):
         # "list_data":widgets.get("list_data"),
         # "web_images":widgets.get("web_images"),
         "category": data.get("category")['title'],
+        "city":data.get("webengage")["city"],
         "title": data.get("share"),
         "url": data.get("url"),
         "district": data.get("district"),
@@ -59,11 +60,18 @@ def get_details_from_data(token):
     return pure_data
 
 
-def get_data_from_divar():
+def get_data_from_divar(city="isfahan"):
     ss = (datetime.now() - timedelta(minutes=5)).timestamp()*1000000
     timee = int(ss)
     print(timee)
-    url = "https://api.divar.ir/v8/search/4/ROOT"
+    filter='مالی | مهاجر'
+    if city=="tehran":
+        url = "https://api.divar.ir/v8/search/1/ROOT"
+        # filter='مهاجر'
+        print("api acall",city)
+    else:
+         url = "https://api.divar.ir/v8/search/4/ROOT"
+
     # url = "https://api.divar.ir/v8/search/4/Root"
     lst_token = []
     results = []
@@ -71,8 +79,7 @@ def get_data_from_divar():
         payload = json.dumps(
             {"json_schema": {"category": {"value": "ROOT"}}, "last-post-date": timee})
         headers = {
-            'Content-Type': 'text/plain',
-            'Cookie': 'did=ec3de232-193d-4d29-8d19-5c210cd0e20d; ga=GA1.2.958343835.1628941508; _gcl_au=1.1.1710749390.1637677108; multi-city=isfahan|; city=isfahan; _gid=GA1.2.958373558.1644561048; _gat_UA-32884252-2=1'
+            'Content-Type': 'text/plain'
         }
         response = requests.request("POST", url, headers=headers, data=payload)
         res = response.json()
@@ -90,10 +97,9 @@ def get_data_from_divar():
         lst_token.append(results)
 
     df = pd.DataFrame(results)
-    filter_response = df[df['description'].str.contains('مالی | مهاجر')]
+    filter_response = df[df['description'].str.contains(filter)]
     ss = []
     for index, item in filter_response.iterrows():
-        # print('system',item)
         ss.append(item)
 
     return ss
