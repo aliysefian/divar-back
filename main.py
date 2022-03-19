@@ -9,6 +9,8 @@ from db.database import SessionLocal, engine
 from db.api import get_data_from_divar
 from fastapi_utils.tasks import repeat_every
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import Page, add_pagination, paginate
+
 
 origins = ["*"]
 
@@ -84,7 +86,8 @@ def call_back_city():
 #     items = crud.get_items(db, skip=skip, limit=limit)
 #     return items
 
-@app.get("/posts/")
-def read_posts(skip: int = 0, limit: int = 100,city="isfahan", db: Session = Depends(get_db)):
-    items = crud.get_posts(db, skip=skip, limit=limit,city=city)
+@app.get("/posts/",response_model=Page[schemas.Posts])
+def read_posts(city="isfahan", db: Session = Depends(get_db)):
+    items = paginate(crud.get_posts(db,city=city))
     return items
+add_pagination(app)
